@@ -1,0 +1,22 @@
+{
+  "name": "electronchat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haoweili1096/electronChat.git"
+  },
+  "author": "Haowei Li",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haoweili1096/electronChat/issues"
+  },
+  "homepage": "https://github.com/haoweili1096/electronChat#readme",
+  "devDependencies": {
+    "electron": "^11.2.1"
+  }
+}
