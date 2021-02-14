@@ -6,7 +6,7 @@ export default function App(){
     const enhancedTitle = title + ' - React App!';
 
     const sendNotification = () => {
-        window.sendNotification('My custom message');
+        e_notification.sendNotification('My custom message');
     };
 
     return (
