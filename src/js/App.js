@@ -1,5 +1,4 @@
 import React from 'react';
-import { ipcRenderer } from 'electron';
 
 export default function App(){
     //debugger
@@ -7,7 +6,7 @@ export default function App(){
     const enhancedTitle = title + ' - React App!';
 
     const sendNotification = () => {
-        ipcRenderer.send('notify', 'This is my custom message!');
+        window.sendNotification('My custom message');
     };
 
     return (

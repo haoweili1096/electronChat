@@ -12,7 +12,8 @@ function createWindow(){
         height: 600,
         backgroundColor: "white", 
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'preload.js')
         }
     })
 
