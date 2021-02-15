@@ -6,9 +6,10 @@ export const fetchChats = () => {
         .get()
         .then((snapshot) => {
             // if you are fetching collection then data are provided under snapshot.docs
-            const data = snapshot.docs.map(doc => {
-                return doc.data();
-            })
+            const data = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }))
             return data;
         })
 }
