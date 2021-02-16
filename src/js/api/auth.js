@@ -18,3 +18,6 @@ export async function register({email, password, username, avatar}){
         return Promise.reject(error.message);
     }
 }
+
+export const onAuthStateChanges = onAuth => 
+    firebase.auth().onAuthStateChanged(onAuth)
