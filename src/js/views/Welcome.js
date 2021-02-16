@@ -14,9 +14,9 @@ export default function Welcome() {
         ['Need an account?', 'Register'] : 
         ['Already registered?', 'Login'];
 
-    if(isChecking){
-        return <LoadingView />
-    }
+    // if(isChecking){
+    //     return <LoadingView />
+    // }
 
     if(user){
         return <Redirect to="/home" />
