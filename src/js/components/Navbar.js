@@ -20,11 +20,7 @@ export default function Navbar() {
                 <div className="chat-navbar-inner-right">
                     <span className="logged-in-user">Hi User</span>
                     <Link
-                        to="/register" 
-                        className="btn btn-outline-danger ml-2">Register
-                    </Link>
-                    <Link
-                        to="/login" 
+                        to="/" 
                         className="btn btn-outline-success ml-2">Login
                     </Link>
                 </div>
