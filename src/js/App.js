@@ -10,7 +10,6 @@ import WelcomeView from './views/Welcome';
 import SettingsView from './views/Settings';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
 import LoadingView from './components/shared/LoadingView';
 
 import { listenToAuthChanges } from './actions/auth';
@@ -43,7 +42,7 @@ function ChatApp() {
 
     return (
         <Router>
-            <Navbar />
+            
             <div className='content-wrapper'>
                 <Switch>
                     <Route path="/" exact>
