@@ -20,6 +20,8 @@ function createAuthReducer(){
             case 'AUTH_ON_INIT':
             case 'AUTH_ON_ERROR':
                 return null;
+            case 'AUTH_LOGIN_SUCCESS':
+            case 'AUTH_REGISTER_SUCCESS':
             case 'AUTH_ON_SUCCESS':
                 return action.user;
             default:
