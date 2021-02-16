@@ -16,6 +16,12 @@ export const logout = () => dispatch => {
         .then(_ => dispatch({type: 'AUTH_LOGOUT_SUCCESS'}))
 }
 
+export const loginUser = formData => dispatch => {
+    api
+        .login(formData)
+        .then(_ => dispatch({type: 'AUTH_LOGIN_SUCCESS'}))
+}
+
 export const listenToAuthChanges = () => dispatch => {
     dispatch({type: 'AUTH_ON_INIT'});
     api.onAuthStateChanges(authUser => {
