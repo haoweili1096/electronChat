@@ -3,12 +3,20 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { useReducer } from 'react';
 
-const createUserProfile = userProfile => {
+const createUserProfile = userProfile => 
     db
         .collection('profiles')
         .doc(userProfile.uid)
         .set(userProfile)
-}
+
+
+export const getUserProfile = uid => 
+    db 
+        .collection('profiles')
+        .doc(uid)
+        .get()
+        .then(snapshot => snapshot.data())
+
 
 export async function register({email, password, username, avatar}){
     try{
