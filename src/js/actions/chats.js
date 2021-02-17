@@ -50,3 +50,10 @@ export const joinChat = (chat, uid) => dispatch =>
         .then(_ => {
             dispatch({type: 'CHATS_JOIN_SUCCESS', chat});
         })
+
+export const subscribeToChat = chatId => dispatch => 
+    api
+        .subscribeToChat(chatId, (chat) => {
+            debugger
+            dispatch({type: 'CHATS_SET_ACTIVE_CHAT', chat})
+        })
