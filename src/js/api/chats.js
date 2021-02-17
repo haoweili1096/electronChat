@@ -13,3 +13,9 @@ export const fetchChats = () => {
             return data;
         })
 }
+
+export const createChat = chat =>
+    db
+        .collection('chats')
+        .add(chat)
+        .then(docRef => docRef.id)
