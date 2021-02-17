@@ -15,7 +15,7 @@ import db from '../db/firestore';
 
 export const fetchChats = () => async (dispatch, getState) => {
     const { user } = getState().auth;
-    dispatch({type: 'CHATS_FETCH_INIT'});
+    dispatch({ type: 'CHATS_FETCH_INIT' });
     const chats = await api.fetchChats();
 
     chats.forEach(chat => chat.joinedUsers = chat.joinedUsers.map(user => user.id));
@@ -23,24 +23,24 @@ export const fetchChats = () => async (dispatch, getState) => {
     const sortedChats = chats.reduce((accuChats, chat) => {
         accuChats[chat.joinedUsers.includes(user.uid) ? 'joined' : 'available'].push(chat);
         return accuChats;
-    }, {joined: [], available: []})
-    
+    }, { joined: [], available: [] })
+
     dispatch({
         type: 'CHATS_FETCH_SUCCESS',
         ...sortedChats
     })
-    
+
     return sortedChats;
 }
-    
+
 export const createChat = (formData, userId) => async dispatch => {
-    const newChat = {...formData};
+    const newChat = { ...formData };
     newChat.admin = db.doc(`profiles/${userId}`);
-    
+
     const chatId = await api.createChat(newChat);
-    dispatch({type: 'CHATS_CREATE_SUCCESS'});
+    dispatch({ type: 'CHATS_CREATE_SUCCESS' });
     await api.joinChat(userId, chatId); // the admin join in the chat
-    dispatch({type: 'CHATS_JOIN_SUCCESS', chat: {...newChat, id: chatId}});
+    dispatch({ type: 'CHATS_JOIN_SUCCESS', chat: { ...newChat, id: chatId } });
     return chatId;
 
 }
@@ -48,10 +48,10 @@ export const createChat = (formData, userId) => async dispatch => {
 export const joinChat = (chat, uid) => dispatch =>
     api.joinChat(uid, chat.id)
         .then(_ => {
-            dispatch({type: 'CHATS_JOIN_SUCCESS', chat});
+            dispatch({ type: 'CHATS_JOIN_SUCCESS', chat });
         })
 
-export const subscribeToChat = chatId => dispatch => 
+export const subscribeToChat = chatId => dispatch =>
     api
         .subscribeToChat(chatId, async (chat) => {
 
@@ -61,5 +61,12 @@ export const subscribeToChat = chatId => dispatch =>
             }))
 
             chat.joinedUsers = joinedUsers;
-            dispatch({type: 'CHATS_SET_ACTIVE_CHAT', chat})
+            dispatch({ type: 'CHATS_SET_ACTIVE_CHAT', chat })
         })
+
+export const subscribeToProfile = uid => dispatch =>
+    api
+        .subscribeToProfile(uid, user => {
+            console.log('changing profile');
+            dispatch({ type: 'CHATS_UPDATE_USER_STATE', user })
+        })     
