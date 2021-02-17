@@ -8,11 +8,10 @@ import AvailableChatList from '../components/AvailableChatsList';
 import ViewTitle from '../components/shared/ViewTitle';
 import { withBaseLayout } from '../layouts/Base';
 
-
-
 function Home() {
     const dispatch = useDispatch();
-    const chats = useSelector(state => state.chats.items);
+    const joinedChats = useSelector(({chats}) => chats.joined);
+    const availableChats = useSelector(({chats}) => chats.available);
 
     useEffect(() => {
         dispatch(fetchChats())
@@ -21,7 +20,7 @@ function Home() {
     return (
         <div className="row no-gutters fh">
             <div className="col-3 fh">
-                <JoinedChatsList chats={chats} />
+                <JoinedChatsList chats={joinedChats} />
             </div>
             <div className="col-9 fh">
                 <ViewTitle text="Choose your channel">
@@ -29,7 +28,7 @@ function Home() {
                         className="btn btn-outline-primary" 
                         to="/chatCreate">New</Link>
                 </ViewTitle>
-                <AvailableChatList chats={chats} />
+                <AvailableChatList chats={availableChats} />
             </div>
         </div>
     )
