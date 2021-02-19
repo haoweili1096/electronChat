@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,6 +6,8 @@ import ChatUsersList from '../components/ChatUsersList';
 import ViewTitle from '../components/shared/ViewTitle';
 import ChatMessagesList from '../components/ChatMessagesList';
 import { withBaseLayout } from '../layouts/Base';
+import LoadingView from '../components/shared/LoadingView';
+
 import { subscribeToChat, subscribeToProfile } from '../actions/chats';
 
 function Chat() {
@@ -27,17 +29,21 @@ function Chat() {
         joinedUsers && subscribeToJoinedUsers(joinedUsers);
     }, [joinedUsers])
 
-    const subscribeToJoinedUsers = (jUsers) => {
+    const subscribeToJoinedUsers = useCallback((jUsers) => {
         jUsers.forEach(user => {
             if(!peopleWatchers.current[user.uid]){
                 peopleWatchers.current[user.uid] = dispatch(subscribeToProfile(user.uid, id));
             }
         })
-    }
-    
-    const unsubFromJoinedusers = () => {
+    }, [dispatch, id]) 
+
+    const unsubFromJoinedusers = useCallback(() => {
         Object.keys(peopleWatchers.current)
             .forEach(id => peopleWatchers.current[id]())
+    }, [peopleWatchers.current]) // the 2nd [] means when this function will be recreated. Here means when peopleWatchers.current changes, it will be recreated
+
+    if(!activeChat?.id){
+        return <LoadingView message="Loading Chat..."/>
     }
 
     return (
