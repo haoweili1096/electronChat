@@ -14,6 +14,7 @@ import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import LoadingView from './components/shared/LoadingView';
 
 import { listenToAuthChanges } from './actions/auth';
+import { checkUserConnection } from './actions/connection';
 
 function AuthRoute({children, ...rest}){
     const user = useSelector(({auth}) => auth.user);
@@ -32,10 +33,25 @@ function AuthRoute({children, ...rest}){
 function ChatApp() {
     const dispatch = useDispatch();
     const isChecking = useSelector(({auth}) => auth.isChecking);
+    const user = useSelector(({auth}) => auth.user);
 
     useEffect(() => {
-        dispatch(listenToAuthChanges());
+        const unsubFromAuth = dispatch(listenToAuthChanges());
+        
+        return () => {
+            unsubFromAuth(); 
+        }
     }, [dispatch])
+
+    useEffect(() => {
+        let unsubFromUserConnection;
+        if(user?.uid){
+            unsubFromUserConnection = dispatch(checkUserConnection(user.uid));
+        }
+        return () => {
+            unsubFromUserConnection && unsubFromUserConnection();
+        }
+    }, [dispatch, user])
 
     if(isChecking){
         return <LoadingView />
