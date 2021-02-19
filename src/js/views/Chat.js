@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,6 +10,7 @@ import { subscribeToChat, subscribeToProfile } from '../actions/chats';
 
 function Chat() {
     const { id } = useParams();
+    const peopleWatchers = useRef({}); // preserve the values between renderers
     const dispatch = useDispatch();
     const activeChat = useSelector(({chats}) => chats.activeChats[id]);
     const joinedUsers = activeChat?.joinedUsers;
@@ -18,6 +19,7 @@ function Chat() {
         const unsubFromChat = dispatch(subscribeToChat(id));
         return () => {
             unsubFromChat();
+            unsubFromJoinedusers();
         }
     }, [])
 
@@ -27,8 +29,15 @@ function Chat() {
 
     const subscribeToJoinedUsers = (jUsers) => {
         jUsers.forEach(user => {
-            dispatch(subscribeToProfile(user.uid))
+            if(!peopleWatchers.current[user.uid]){
+                peopleWatchers.current[user.uid] = dispatch(subscribeToProfile(user.uid));
+            }
         })
+    }
+    
+    const unsubFromJoinedusers = () => {
+        Object.keys(peopleWatchers.current)
+            .forEach(id => peopleWatchers.current[id]())
     }
 
     return (
