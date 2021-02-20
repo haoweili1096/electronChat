@@ -15,6 +15,7 @@ import LoadingView from './components/shared/LoadingView';
 
 import { listenToAuthChanges } from './actions/auth';
 import { checkUserConnection } from './actions/connection';
+import { loadInitialSettings } from './actions/settings';
 
 function AuthRoute({children, ...rest}){
     const user = useSelector(({auth}) => auth.user);
@@ -36,6 +37,7 @@ function ChatApp() {
     const user = useSelector(({auth}) => auth.user);
 
     useEffect(() => {
+        dispatch(loadInitialSettings());
         const unsubFromAuth = dispatch(listenToAuthChanges());
         
         return () => {
