@@ -9,7 +9,7 @@ import { withBaseLayout } from '../layouts/Base';
 import LoadingView from '../components/shared/LoadingView';
 import Messenger from '../components/Messenger';
 
-import { subscribeToChat, subscribeToProfile, sendChatMessage } from '../actions/chats';
+import { subscribeToChat, subscribeToProfile, sendChatMessage, subscribeToMessages } from '../actions/chats';
 
 function Chat() {
     const { id } = useParams();
@@ -20,6 +20,7 @@ function Chat() {
 
     useEffect(() => {
         const unsubFromChat = dispatch(subscribeToChat(id));
+        dispatch(subscribeToMessages(id));
         return () => {
             unsubFromChat();
             unsubFromJoinedusers();
