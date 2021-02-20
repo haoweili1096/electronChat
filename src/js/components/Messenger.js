@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createTimestamp } from '../utils/time';
 
 export default function Messenger({onSubmit}) {
 
@@ -7,9 +8,23 @@ export default function Messenger({onSubmit}) {
     const onKeyPress = e => {
         if(e.key === 'Enter'){
             e.preventDefault(); // don't go to next line
-            onSubmit(value);
+            sendMessage();
             setValue('');
         }
+    }
+
+    const sendMessage = () => {
+        //check if the message is just empty spaces
+        if(value.trim() === ''){
+            return;
+        }
+
+        const message = {
+            content: value,
+            timestamp: createTimestamp()
+        }
+
+        onSubmit(message);
     }
 
     return (
