@@ -9,11 +9,23 @@ export default function configureStore(){
         thunkMiddleware
     ];
 
+    const mainReducer = combineReducers({
+        chats: chatReducer,
+        auth: authReducer
+    })
+
+    //intermediate reducer
+    const rootReducer = (state, action) => {
+
+        if(action.type === 'AUTH_LOGOUT_SUCCESS'){
+            state = undefined;
+        }
+
+        return mainReducer(state, action);
+    }
+
     const store = createStore(
-        combineReducers({
-            chats: chatReducer,
-            auth: authReducer
-        }), 
+        rootReducer, 
         applyMiddleware(...middlewares));
 
     return store;
