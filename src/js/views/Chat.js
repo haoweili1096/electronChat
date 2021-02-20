@@ -9,7 +9,7 @@ import { withBaseLayout } from '../layouts/Base';
 import LoadingView from '../components/shared/LoadingView';
 import Messenger from '../components/Messenger';
 
-import { subscribeToChat, subscribeToProfile } from '../actions/chats';
+import { subscribeToChat, subscribeToProfile, sendChatMessage } from '../actions/chats';
 
 function Chat() {
     const { id } = useParams();
@@ -43,12 +43,12 @@ function Chat() {
             .forEach(id => peopleWatchers.current[id]())
     }, [peopleWatchers.current]) // the 2nd [] means when this function will be recreated. Here means when peopleWatchers.current changes, it will be recreated
 
+    const sendMessage = useCallback(message => {
+        dispatch(sendChatMessage(message, id))
+    }, [id])
+
     if(!activeChat?.id){
         return <LoadingView message="Loading Chat..."/>
-    }
-
-    const sendMessage = message => {
-        alert(JSON.stringify(message))
     }
 
     return (
