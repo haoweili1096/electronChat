@@ -33,3 +33,7 @@ app.whenReady().then(createWindow);
 ipcMain.on('notify', (event, message) => {
     new Notification({title: 'Notification', body: message}).show();
 })
+
+ipcMain.on('app-quit', () => {
+    app.quit();
+})

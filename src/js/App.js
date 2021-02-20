@@ -31,6 +31,13 @@ function AuthRoute({children, ...rest}){
     )
 }
 
+const ContentWrapper = ({children}) => {
+    const isDarkTheme = useSelector(({settings}) => settings.isDarkTheme);
+    return (
+        <div className={`content-wrapper ${isDarkTheme ? 'dark' : 'light'}`}>{children}</div>
+    )
+}
+
 function ChatApp() {
     const dispatch = useDispatch();
     const isChecking = useSelector(({auth}) => auth.isChecking);
@@ -61,8 +68,7 @@ function ChatApp() {
 
     return (
         <Router>
-            
-            <div className='content-wrapper'>
+            <ContentWrapper>
                 <Switch>
                     <Route path="/" exact>
                         <WelcomeView />
@@ -80,7 +86,7 @@ function ChatApp() {
                         <SettingsView />
                     </AuthRoute>
                 </Switch>
-            </div>
+            </ContentWrapper>
         </Router>
     )
 }

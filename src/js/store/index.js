@@ -22,7 +22,12 @@ export default function configureStore(){
     const rootReducer = (state, action) => {
 
         if(action.type === 'AUTH_LOGOUT_SUCCESS'){
-            state = undefined;
+            Object.keys(state).forEach(sk => { // state key
+                if(state[sk].savable){
+                    return;
+                }
+                state[sk] = undefined;
+            })
         }
 
         return mainReducer(state, action);

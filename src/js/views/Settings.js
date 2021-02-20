@@ -48,7 +48,7 @@ function Settings() {
                         </div>
                         <button
                             type="button"
-                            onClick={() => { }}
+                            onClick={() => e_notification.appApi.quitApp()}
                             className="btn btn-danger">
                             Quit App
                     </button>
