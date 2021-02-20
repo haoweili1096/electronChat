@@ -54,6 +54,7 @@ function Chat() {
             <div className="col-9 fh">
                 <ViewTitle text={`Channel: ${activeChat?.name}`} />
                 <ChatMessagesList />
+                
             </div>
         </div>
     )

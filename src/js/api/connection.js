@@ -11,7 +11,8 @@ const getOnlineStatus = isOnline => {
 
 export const setUserOnlinseStatus = (uid, isOnline) => {
     const userRef = db.doc(`/profiles/${uid}`);
-    return userRef.update(getOnlineStatus(isOnline));
+    const updateData = getOnlineStatus(isOnline);
+    return userRef.update(updateData);
 }
 
 export const onConnectionChanged = onConnection => 
