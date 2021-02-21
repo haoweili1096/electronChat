@@ -8,12 +8,29 @@ const isDev = !app.isPackaged;
 const dockIcon = path.join(__dirname, 'assets', 'images', 'react_app_logo.png');
 const trayIcon = path.join(__dirname, 'assets', 'images', 'react_icon.png');
 
+function createSplashWindow(){
+    const win = new BrowserWindow({
+        width: 400,
+        height: 200,
+        frame: false,
+        transparent: true,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+        }
+    })
+
+    win.loadFile('splash.html');
+    return win;
+}
+
 function createWindow(){
     // browser window run by renderer process
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 800,
         backgroundColor: "#6e707e", 
+        show: false,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -23,6 +40,7 @@ function createWindow(){
 
     win.loadFile('index.html');
     isDev && win.webContents.openDevTools();
+    return win;
 }
 
 if (isDev) {
@@ -45,7 +63,19 @@ app.whenReady()
         tray = new Tray(trayIcon);
         tray.setContextMenu(menu);
 
-        createWindow();
+        // const mainApp = createWindow();
+        // mainApp.once('ready-to-show', () => {
+        //     mainApp.show();
+        // })
+        const mainApp = createWindow();
+        const splash = createSplashWindow();
+        
+        mainApp.once('ready-to-show', () => {
+            setTimeout(() => {
+                splash.destroy();
+                mainApp.show();
+            }, 2000)
+        })
     });
 
 ipcMain.on('notify', (event, message) => {
@@ -54,4 +84,16 @@ ipcMain.on('notify', (event, message) => {
 
 ipcMain.on('app-quit', () => {
     app.quit();
+})
+
+app.on('window-all-closed', () => {
+    if(process.platform !== 'darwin'){
+        app.quit();
+    }
+})
+
+app.on('active', () => {
+    if(BrowserWindow.getAllWindows().length === 0){
+        createWindow();
+    }
 })
