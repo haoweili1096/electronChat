@@ -1,5 +1,5 @@
 // main process
-const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, Menu } = require('electron');
 
 //only use electron-reload in development environment
 const path = require('path');
@@ -10,7 +10,7 @@ function createWindow(){
     const win = new BrowserWindow({
         width: 800,
         height: 600,
-        backgroundColor: "white", 
+        backgroundColor: "#6e707e", 
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -28,7 +28,13 @@ if (isDev) {
     })
 }
 
-app.whenReady().then(createWindow);
+app.whenReady()
+    .then(() => {
+        const template = require('./utils/Menu').createTemplate(app);
+        const menu = Menu.buildFromTemplate(template);
+        Menu.setApplicationMenu(menu);
+        createWindow();
+    });
 
 ipcMain.on('notify', (event, message) => {
     new Notification({title: 'Notification', body: message}).show();
