@@ -63,19 +63,19 @@ app.whenReady()
         tray = new Tray(trayIcon);
         tray.setContextMenu(menu);
 
-        // const mainApp = createWindow();
-        // mainApp.once('ready-to-show', () => {
-        //     mainApp.show();
-        // })
         const mainApp = createWindow();
-        const splash = createSplashWindow();
-        
         mainApp.once('ready-to-show', () => {
-            setTimeout(() => {
-                splash.destroy();
-                mainApp.show();
-            }, 2000)
+            mainApp.show();
         })
+        // const mainApp = createWindow();
+        // const splash = createSplashWindow();
+        
+        // mainApp.once('ready-to-show', () => {
+        //     setTimeout(() => {
+        //         splash.destroy();
+        //         mainApp.show();
+        //     }, 2000)
+        // })
     });
 
 ipcMain.on('notify', (event, message) => {
